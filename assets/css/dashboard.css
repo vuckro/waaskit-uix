@@ -1,6 +1,6 @@
 /*
- * Waaskit UIX - Dashboard V4.0
- * Header flottant, cartes groupées, Design card (color & typography) avec sauvegarde.
+ * Waaskit UIX - Dashboard V4.1
+ * Dashboard page (Modules) + Design system page (Design card).
  */
 
 :root {
@@ -42,7 +42,8 @@
   margin-bottom: var(--wk-space-l);
 }
 
-body.toplevel_page_waaskit-uix-dashboard .wrap > h1 {
+body.toplevel_page_waaskit-uix-dashboard .wrap > h1,
+body.waaskit-uix-dashboard_page_waaskit-uix-design .wrap > h1 {
   display: none;
 }
 
@@ -57,6 +58,12 @@ body.toplevel_page_waaskit-uix-dashboard .wrap > h1 {
   display: block;
 }
 
+.wk2-nav-left {
+  display: flex;
+  align-items: center;
+  gap: var(--wk-space-s);
+}
+
 .wk2-header-right {
   display: flex;
   align-items: center;
@@ -68,7 +75,7 @@ body.toplevel_page_waaskit-uix-dashboard .wrap > h1 {
   border: none;
   background: transparent;
   font-size: 16px;
-  cursor: default; /* placeholder, inactif pour l'instant */
+  cursor: default; /* placeholder */
 }
 
 .wk2-nav-toggle {
@@ -79,7 +86,8 @@ body.toplevel_page_waaskit-uix-dashboard .wrap > h1 {
   cursor: pointer;
 }
 
-.wk2-nav {
+.wk2-nav,
+.wk2-nav-left {
   display: flex;
   align-items: center;
   gap: var(--wk-space-s);
@@ -105,13 +113,13 @@ body.toplevel_page_waaskit-uix-dashboard .wrap > h1 {
   padding: 0;
 }
 
-.wk2-row {
+.wk2-row-single {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--wk-space-m);
 }
 
-/* Cards: section (label+body) + footer séparé en bas */
+/* Cards */
 .wk2-card {
   background: var(--wk-surface);
   border-radius: var(--wk-radius-m);
@@ -158,27 +166,6 @@ body.toplevel_page_waaskit-uix-dashboard .wrap > h1 {
   color: var(--wk-accent);
 }
 
-.wk2-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.wk2-list li {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 13px;
-  padding: 4px 0;
-}
-
-.wk2-tag {
-  padding: 2px 6px;
-  border-radius: 999px;
-  background: var(--wk-accent-soft);
-  font-size: 11px;
-}
-
 .wk2-meta {
   font-size: 11px;
   color: var(--wk-text-muted);
@@ -205,7 +192,7 @@ body.toplevel_page_waaskit-uix-dashboard .wrap > h1 {
 
 .wk2-input {
   width: 100%;
-  max-width: 220px;
+  max-width: 260px;
   padding: 6px 8px;
   border-radius: var(--wk-radius-s);
   border: 1px solid var(--wk-border-subtle);
@@ -256,12 +243,8 @@ body.toplevel_page_waaskit-uix-dashboard .wrap > h1 {
   cursor: default;
 }
 
-/* Responsive + off-canvas nav */
+/* Responsive nav */
 @media (max-width: 1080px) {
-  .wk2-row {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
   .wk2-nav-toggle {
     display: inline-flex;
   }

@@ -13,44 +13,49 @@ class Dashboard
 
     public function registerMenu(): void
     {
+        // Main dashboard
         add_menu_page(
             __('Waaskit UIX', 'waaskit-uix'),
             __('Waaskit UIX', 'waaskit-uix'),
             'manage_options',
             'waaskit-uix-dashboard',
-            [$this, 'render'],
+            [$this, 'renderDashboard'],
             'dashicons-layout',
             3
         );
+
+        // Design system page
+        add_submenu_page(
+            'waaskit-uix-dashboard',
+            __('Design system', 'waaskit-uix'),
+            __('Design system', 'waaskit-uix'),
+            'manage_options',
+            'waaskit-uix-design',
+            [$this, 'renderDesign']
+        );
     }
 
-    public function render(): void
+    public function renderDashboard(): void
     {
-        // Root div for the JS app (SPA-style admin).
-        echo '<div class="waaskit-uix" id="waaskit-uix-app"></div>';
+        echo '<div class="waaskit-uix" id="waaskit-uix-app" data-wkuix-view="dashboard"></div>';
+    }
+
+    public function renderDesign(): void
+    {
+        echo '<div class="waaskit-uix" id="waaskit-uix-app" data-wkuix-view="design"></div>';
     }
 
     public function enqueueAssets(string $hook): void
     {
-        if ($hook !== 'toplevel_page_waaskit-uix-dashboard') {
+        if ($hook !== 'toplevel_page_waaskit-uix-dashboard' && $hook !== 'waaskit-uix-dashboard_page_waaskit-uix-design') {
             return;
         }
 
-        require_once ABSPATH . 'wp-admin/includes/plugin.php';
-
-        $frameworks = [
-            'acss'   => is_plugin_active('automaticcss-plugin/automaticcss-plugin.php'),
-            'core'   => is_plugin_active('core-framework/core-framework.php'),
-            'bricks' => is_plugin_active('bricks/bricks.php')
-                || wp_get_theme()->get_template() === 'bricks'
-                || wp_get_theme()->get_stylesheet() === 'bricks',
-        ];
-
         $settings = get_option('waaskit_uix_settings', []);
         $design   = $settings['design'] ?? [
-            'primary'       => '#111827',
-            'font_body'     => '',
-            'font_heading'  => '',
+            'primary'      => '#111827',
+            'font_body'    => '',
+            'font_heading' => '',
         ];
 
         $css_path = WKUIX_DIR . 'assets/css/dashboard.css';
@@ -66,20 +71,22 @@ class Dashboard
         wp_enqueue_script(
             'waaskit-uix-dashboard',
             WKUIX_URL . 'assets/js/dashboard.js',
-            ['wp-element', 'jquery'],
+            ['wp-element'],
             file_exists($js_path) ? filemtime($js_path) : WKUIX_VERSION,
             true
         );
+
+        $current_view = isset($_GET['page']) && $_GET['page'] === 'waaskit-uix-design' ? 'design' : 'dashboard';
 
         wp_localize_script(
             'waaskit-uix-dashboard',
             'WKUIX',
             [
-                'version'    => WKUIX_VERSION,
-                'frameworks' => $frameworks,
-                'design'     => $design,
-                'ajaxUrl'    => admin_url('admin-ajax.php'),
-                'nonce'      => wp_create_nonce('waaskit_uix_design'),
+                'version' => WKUIX_VERSION,
+                'design'  => $design,
+                'ajaxUrl' => admin_url('admin-ajax.php'),
+                'nonce'   => wp_create_nonce('waaskit_uix_design'),
+                'view'    => $current_view,
             ]
         );
     }
@@ -100,11 +107,11 @@ class Dashboard
             wp_send_json_error(['message' => 'Invalid primary color'], 400);
         }
 
-        $settings          = get_option('waaskit_uix_settings', []);
-        $settings['design'] = [
-            'primary'       => $primary,
-            'font_body'     => $font_body,
-            'font_heading'  => $font_heading,
+        $settings            = get_option('waaskit_uix_settings', []);
+        $settings['design']  = [
+            'primary'      => $primary,
+            'font_body'    => $font_body,
+            'font_heading' => $font_heading,
         ];
 
         update_option('waaskit_uix_settings', $settings);
