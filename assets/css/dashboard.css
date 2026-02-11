@@ -1,6 +1,6 @@
 /*
- * Waaskit UIX - Dashboard V4.3
- * Single-page app: header + Dashboard view + Design system view.
+ * Waaskit UIX - Dashboard V4.4
+ * SPA header + Dashboard (Vibe coding) + Design system.
  */
 
 :root {
@@ -27,7 +27,6 @@
 }
 
 .wk2-shell {
-  /* pleine largeur dans la zone de contenu */
 }
 
 /* Header */
@@ -53,7 +52,7 @@ body.toplevel_page_waaskit-uix-dashboard .wrap > h1 {
 }
 
 .wk2-logo img {
-  height: 30px;
+  height: 28px;
   display: block;
 }
 
@@ -85,14 +84,8 @@ body.toplevel_page_waaskit-uix-dashboard .wrap > h1 {
   cursor: pointer;
 }
 
-/* Desktop nav (inline left) */
-.wk2-nav-left,
 .wk2-nav {
-  /* base reset */
-}
-
-.wk2-nav {
-  display: none; /* nav off-canvas hidden on desktop */
+  display: none;
 }
 
 .wk2-nav-item {
@@ -100,7 +93,7 @@ body.toplevel_page_waaskit-uix-dashboard .wrap > h1 {
   background: transparent;
   font-size: 13px;
   color: var(--wk-text-muted);
-  padding: 4px 8px;
+  padding: 4px 10px;
   border-radius: 999px;
   cursor: pointer;
 }
@@ -129,7 +122,27 @@ body.toplevel_page_waaskit-uix-dashboard .wrap > h1 {
   border: 1px solid var(--wk-border-subtle);
   display: flex;
   flex-direction: column;
-  min-height: 160px;
+  min-height: 180px;
+}
+
+.wk2-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--wk-space-m);
+}
+
+.wk2-card-title {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--wk-text);
+}
+
+.wk2-card-subtitle {
+  font-size: 11px;
+  color: var(--wk-text-muted);
 }
 
 .wk2-card-section {
@@ -175,6 +188,33 @@ body.toplevel_page_waaskit-uix-dashboard .wrap > h1 {
 
 .wk2-meta-inline {
   margin-left: var(--wk-space-s);
+}
+
+/* Vibe coding columns */
+.wk2-vibe-columns {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--wk-space-m);
+  margin-top: var(--wk-space-m);
+}
+
+.wk2-vibe-column-title {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--wk-text-muted);
+  margin-bottom: var(--wk-space-xs);
+}
+
+.wk2-vibe-column ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.wk2-vibe-column li {
+  font-size: 13px;
+  padding: 2px 0;
 }
 
 /* Design card */
@@ -252,7 +292,7 @@ body.toplevel_page_waaskit-uix-dashboard .wrap > h1 {
   }
 
   .wk2-nav-left {
-    display: none; /* hide inline tabs on mobile */
+    display: none;
   }
 
   .wk2-nav {
@@ -272,5 +312,9 @@ body.toplevel_page_waaskit-uix-dashboard .wrap > h1 {
 
   .wk2-nav.wk2-nav--open {
     display: flex;
+  }
+
+  .wk2-vibe-columns {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
