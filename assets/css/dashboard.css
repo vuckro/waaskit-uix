@@ -1,6 +1,6 @@
 /*
- * Waaskit UIX - Dashboard V3
- * Header flottant + cartes détachées sur fond gris.
+ * Waaskit UIX - Dashboard V3.1
+ * Header flotant sans ombres lourdes, cartes légères, pleine largeur.
  */
 
 :root {
@@ -19,19 +19,16 @@
   --wk-accent-soft: #e5e7eb;
 }
 
+/* Root: pleine largeur, sans carte globale */
 .waaskit-uix {
   margin: 20px 20px 20px 0;
-  background: var(--wk-bg);
-  border-radius: var(--wk-radius-m);
-  padding: var(--wk-space-m);
 }
 
 .wk2-shell {
-  max-width: 1200px;
-  margin: 0 auto;
+  /* pleine largeur dans la zone de contenu */
 }
 
-/* Header flottant */
+/* Header flottant, sans grosse ombre ni fond supplémentaire */
 .wk2-header {
   display: flex;
   align-items: center;
@@ -39,7 +36,7 @@
   padding: var(--wk-space-m);
   background: var(--wk-surface);
   border-radius: var(--wk-radius-m);
-  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.08);
+  border: 1px solid var(--wk-border-subtle);
   margin-bottom: var(--wk-space-l);
 }
 
@@ -91,7 +88,7 @@
   background: var(--wk-accent-soft);
 }
 
-/* Main: cartes détachées sur fond gris */
+/* Main: cartes détachées sur fond natif WP */
 .wk2-main {
   padding: 0;
 }
@@ -107,7 +104,6 @@
   border-radius: var(--wk-radius-m);
   padding: var(--wk-space-m);
   border: 1px solid var(--wk-border-subtle);
-  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
 }
 
 .wk2-card-label {
