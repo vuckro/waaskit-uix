@@ -17,12 +17,14 @@
 
     return h('header', { className: 'wk2-header' }, [
       h('div', { className: 'wk2-header-left' }, [
-        h('div', { className: 'wk2-logo' }, h('img', { src: LOGO_URL, alt: 'Waaskit' })),
-        h('div', { className: 'wk2-header-text' }, [
-          h('div', { className: 'wk2-header-subtitle' }, 'Admin UI for your WordPress stack')
-        ])
+        h('div', { className: 'wk2-logo' }, h('img', { src: LOGO_URL, alt: 'Waaskit' }))
       ]),
       h('div', { className: 'wk2-header-right' }, [
+        h('button', {
+          type: 'button',
+          className: 'wk2-theme-toggle',
+          'aria-label': 'Toggle dark mode (placeholder)'
+        }, '☀︎'),
         h('button', {
           type: 'button',
           className: 'wk2-nav-toggle',
