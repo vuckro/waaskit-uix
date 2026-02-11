@@ -6,14 +6,8 @@
   function Header({ activeView, onChangeView }) {
     const [navOpen, setNavOpen] = useState(false);
 
-    function toggleNav() {
-      setNavOpen(open => !open);
-    }
-
-    function handleChange(view) {
-      onChangeView(view);
-      setNavOpen(false);
-    }
+    function toggleNav() { setNavOpen(open => !open); }
+    function handleChange(view) { onChangeView(view); setNavOpen(false); }
 
     return h('header', { className: 'wk2-header' }, [
       h('div', { className: 'wk2-header-left' }, [
@@ -56,6 +50,55 @@
             className: 'wk2-nav-item' + (activeView === 'design' ? ' wk2-nav-item--active' : ''),
             onClick: function () { handleChange('design'); }
           }, 'Design system')
+        ])
+      ])
+    ]);
+  }
+
+  function DashboardView() {
+    const modules = [
+      { key: 'admin-shell', label: 'Admin shell', status: 'Planned' },
+      { key: 'dark-mode', label: 'Dark mode', status: 'Planned' },
+      { key: 'plugin-theming', label: 'Plugin theming', status: 'Planned' }
+    ];
+
+    const vibe = (window.WKUIX && window.WKUIX.vibe) || {
+      mode: 'manual',
+      current_task: 'Idle',
+      last_action: 'None yet',
+      next_step: 'Define next task',
+    };
+
+    return h('main', { className: 'wk2-main' }, [
+      h('section', { className: 'wk2-row-single' }, [
+        h('div', { className: 'wk2-card' }, [
+          h('div', { className: 'wk2-card-section' }, [
+            h('div', { className: 'wk2-card-label' }, 'Modules'),
+            h('div', { className: 'wk2-card-body' }, [
+              h('div', { className: 'wk2-pills' },
+                modules.map(function (m) {
+                  return h('span', { key: m.key, className: 'wk2-pill' }, m.label + ' · ' + m.status);
+                })
+              )
+            ])
+          ]),
+          h('div', { className: 'wk2-card-footer' },
+            h('div', { className: 'wk2-meta' }, 'Version ' + (window.WKUIX && window.WKUIX.version ? window.WKUIX.version : '0.1.1'))
+          )
+        ]),
+        h('div', { className: 'wk2-card' }, [
+          h('div', { className: 'wk2-card-section' }, [
+            h('div', { className: 'wk2-card-label' }, 'Vibe coding'),
+            h('div', { className: 'wk2-card-body' }, [
+              h('p', null, ['Mode: ', h('strong', null, vibe.mode)]),
+              h('p', null, ['Current task: ', h('strong', null, vibe.current_task)]),
+              h('p', null, ['Last action: ', h('span', null, vibe.last_action)]),
+              h('p', null, ['Next: ', h('span', null, vibe.next_step)])
+            ])
+          ]),
+          h('div', { className: 'wk2-card-footer' },
+            h('div', { className: 'wk2-meta' }, 'This card will track dev state (manual/cron, tasks, etc.).')
+          )
         ])
       ])
     ]);
@@ -179,34 +222,6 @@
             }, saving ? 'Saving…' : 'Save design'),
             message && h('span', { className: 'wk2-meta wk2-meta-inline' }, message)
           ])
-        ])
-      ])
-    ]);
-  }
-
-  function DashboardView() {
-    const modules = [
-      { key: 'admin-shell', label: 'Admin shell', status: 'Planned' },
-      { key: 'dark-mode', label: 'Dark mode', status: 'Planned' },
-      { key: 'plugin-theming', label: 'Plugin theming', status: 'Planned' }
-    ];
-
-    return h('main', { className: 'wk2-main' }, [
-      h('section', { className: 'wk2-row-single' }, [
-        h('div', { className: 'wk2-card' }, [
-          h('div', { className: 'wk2-card-section' }, [
-            h('div', { className: 'wk2-card-label' }, 'Modules'),
-            h('div', { className: 'wk2-card-body' }, [
-              h('div', { className: 'wk2-pills' },
-                modules.map(function (m) {
-                  return h('span', { key: m.key, className: 'wk2-pill' }, m.label + ' · ' + m.status);
-                })
-              )
-            ])
-          ]),
-          h('div', { className: 'wk2-card-footer' },
-            h('div', { className: 'wk2-meta' }, 'Version ' + (window.WKUIX && window.WKUIX.version ? window.WKUIX.version : '0.1.1'))
-          )
         ])
       ])
     ]);
