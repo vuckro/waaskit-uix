@@ -1,5 +1,5 @@
 /*
- * Waaskit UIX - Dashboard V4.2
+ * Waaskit UIX - Dashboard V4.3
  * Single-page app: header + Dashboard view + Design system view.
  */
 
@@ -85,10 +85,14 @@ body.toplevel_page_waaskit-uix-dashboard .wrap > h1 {
   cursor: pointer;
 }
 
+/* Desktop nav (inline left) */
+.wk2-nav-left,
 .wk2-nav {
-  display: flex;
-  align-items: center;
-  gap: var(--wk-space-s);
+  /* base reset */
+}
+
+.wk2-nav {
+  display: none; /* nav off-canvas hidden on desktop */
 }
 
 .wk2-nav-item {
@@ -245,6 +249,10 @@ body.toplevel_page_waaskit-uix-dashboard .wrap > h1 {
 @media (max-width: 1080px) {
   .wk2-nav-toggle {
     display: inline-flex;
+  }
+
+  .wk2-nav-left {
+    display: none; /* hide inline tabs on mobile */
   }
 
   .wk2-nav {
