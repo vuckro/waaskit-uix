@@ -4,6 +4,17 @@
   const LOGO_URL = 'https://www.waaskit.com/wp-content/uploads/2025/05/WaasKit-logo.svg';
 
   function Header({ active, onChange }) {
+    const [navOpen, setNavOpen] = useState(false);
+
+    function toggleNav() {
+      setNavOpen(function (open) { return !open; });
+    }
+
+    function handleChange(view) {
+      onChange(view);
+      setNavOpen(false);
+    }
+
     return h('header', { className: 'wk2-header' }, [
       h('div', { className: 'wk2-header-left' }, [
         h('div', { className: 'wk2-logo' }, h('img', { src: LOGO_URL, alt: 'Waaskit' })),
@@ -11,17 +22,27 @@
           h('div', { className: 'wk2-header-subtitle' }, 'Admin UI for your WordPress stack')
         ])
       ]),
-      h('nav', { className: 'wk2-nav' }, [
+      h('div', { className: 'wk2-header-right' }, [
         h('button', {
           type: 'button',
-          className: 'wk2-nav-item' + (active === 'dashboard' ? ' wk2-nav-item--active' : ''),
-          onClick: function () { onChange('dashboard'); }
-        }, 'Overview'),
-        h('button', {
-          type: 'button',
-          className: 'wk2-nav-item' + (active === 'settings' ? ' wk2-nav-item--active' : ''),
-          onClick: function () { onChange('settings'); }
-        }, 'Settings')
+          className: 'wk2-nav-toggle',
+          'aria-label': 'Toggle navigation',
+          onClick: toggleNav
+        }, '☰'),
+        h('nav', {
+          className: 'wk2-nav' + (navOpen ? ' wk2-nav--open' : '')
+        }, [
+          h('button', {
+            type: 'button',
+            className: 'wk2-nav-item' + (active === 'dashboard' ? ' wk2-nav-item--active' : ''),
+            onClick: function () { handleChange('dashboard'); }
+          }, 'Overview'),
+          h('button', {
+            type: 'button',
+            className: 'wk2-nav-item' + (active === 'settings' ? ' wk2-nav-item--active' : ''),
+            onClick: function () { handleChange('settings'); }
+          }, 'Settings')
+        ])
       ])
     ]);
   }
