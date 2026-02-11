@@ -8,7 +8,6 @@
       h('div', { className: 'wk2-header-left' }, [
         h('div', { className: 'wk2-logo' }, h('img', { src: LOGO_URL, alt: 'Waaskit' })),
         h('div', { className: 'wk2-header-text' }, [
-          h('div', { className: 'wk2-header-title' }, 'Dashboard'),
           h('div', { className: 'wk2-header-subtitle' }, 'Admin UI for your WordPress stack')
         ])
       ]),
@@ -43,36 +42,42 @@
     return h('main', { className: 'wk2-main' }, [
       h('section', { className: 'wk2-row' }, [
         h('div', { className: 'wk2-card' }, [
-          h('div', { className: 'wk2-card-label' }, 'Modules'),
-          h('div', { className: 'wk2-card-body' }, [
-            h('div', { className: 'wk2-pills' },
-              modules.map(function (m) {
-                return h('span', { key: m.key, className: 'wk2-pill' }, m.label + ' · ' + m.status);
-              })
-            )
+          h('div', { className: 'wk2-card-section' }, [
+            h('div', { className: 'wk2-card-label' }, 'Modules'),
+            h('div', { className: 'wk2-card-body' }, [
+              h('div', { className: 'wk2-pills' },
+                modules.map(function (m) {
+                  return h('span', { key: m.key, className: 'wk2-pill' }, m.label + ' · ' + m.status);
+                })
+              )
+            ])
           ]),
           h('div', { className: 'wk2-card-footer' },
             h('div', { className: 'wk2-meta' }, 'Version ' + (window.WKUIX && WKUIX.version ? WKUIX.version : '0.1.1'))
           )
         ]),
         h('div', { className: 'wk2-card' }, [
-          h('div', { className: 'wk2-card-label' }, 'Frameworks'),
-          h('div', { className: 'wk2-card-body' }, [
-            h('ul', { className: 'wk2-list' },
-              frameworks.map(function (f) {
-                return h('li', { key: f.key }, [
-                  h('span', null, f.label),
-                  h('span', { className: 'wk2-tag' }, f.detected ? 'Detected' : 'Not detected')
-                ]);
-              })
-            )
+          h('div', { className: 'wk2-card-section' }, [
+            h('div', { className: 'wk2-card-label' }, 'Frameworks'),
+            h('div', { className: 'wk2-card-body' }, [
+              h('ul', { className: 'wk2-list' },
+                frameworks.map(function (f) {
+                  return h('li', { key: f.key }, [
+                    h('span', null, f.label),
+                    h('span', { className: 'wk2-tag' }, f.detected ? 'Detected' : 'Not detected')
+                  ]);
+                })
+              )
+            ])
           ]),
           h('div', { className: 'wk2-card-footer' })
         ]),
         h('div', { className: 'wk2-card' }, [
-          h('div', { className: 'wk2-card-label' }, 'Next steps'),
-          h('div', { className: 'wk2-card-body' }, [
-            h('p', null, 'Define design tokens, then connect ACSS/Core/Bricks as design sources.')
+          h('div', { className: 'wk2-card-section' }, [
+            h('div', { className: 'wk2-card-label' }, 'Next steps'),
+            h('div', { className: 'wk2-card-body' }, [
+              h('p', null, 'Define design tokens, then connect ACSS/Core/Bricks as design sources.')
+            ])
           ]),
           h('div', { className: 'wk2-card-footer' },
             h('p', { className: 'wk2-meta' }, 'This block can later show recent activity or tips.')
@@ -86,10 +91,12 @@
     return h('main', { className: 'wk2-main' }, [
       h('section', { className: 'wk2-row' }, [
         h('div', { className: 'wk2-card' }, [
-          h('div', { className: 'wk2-card-label' }, 'Settings'),
-          h('div', { className: 'wk2-card-body' },
-            h('p', null, 'Settings will live here (modules, integrations, etc.). For now, this is just a placeholder.')
-          ),
+          h('div', { className: 'wk2-card-section' }, [
+            h('div', { className: 'wk2-card-label' }, 'Settings'),
+            h('div', { className: 'wk2-card-body' },
+              h('p', null, 'Settings will live here (modules, integrations, etc.). For now, this is just a placeholder.')
+            )
+          ]),
           h('div', { className: 'wk2-card-footer' })
         ])
       ])
