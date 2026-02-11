@@ -1,6 +1,6 @@
 /*
- * Waaskit UIX - Dashboard V2
- * Layout type app: hero + single row of cards, sans cartes emboîtées.
+ * Waaskit UIX - Dashboard V3
+ * Header flottant + cartes détachées sur fond gris.
  */
 
 :root {
@@ -21,23 +21,26 @@
 
 .waaskit-uix {
   margin: 20px 20px 20px 0;
+  background: var(--wk-bg);
+  border-radius: var(--wk-radius-m);
+  padding: var(--wk-space-m);
 }
 
 .wk2-shell {
-  background: var(--wk-bg);
-  border-radius: var(--wk-radius-m);
-  min-height: 0;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-/* Hero */
+/* Header flottant */
 .wk2-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--wk-space-m) var(--wk-space-m) var(--wk-space-s);
+  padding: var(--wk-space-m);
   background: var(--wk-surface);
-  border-radius: var(--wk-radius-m) var(--wk-radius-m) 0 0;
-  border-bottom: 1px solid var(--wk-border-subtle);
+  border-radius: var(--wk-radius-m);
+  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.08);
+  margin-bottom: var(--wk-space-l);
 }
 
 .wk2-header-left {
@@ -88,9 +91,9 @@
   background: var(--wk-accent-soft);
 }
 
-/* Main */
+/* Main: cartes détachées sur fond gris */
 .wk2-main {
-  padding: var(--wk-space-m);
+  padding: 0;
 }
 
 .wk2-row {
@@ -104,6 +107,7 @@
   border-radius: var(--wk-radius-m);
   padding: var(--wk-space-m);
   border: 1px solid var(--wk-border-subtle);
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
 }
 
 .wk2-card-label {
@@ -159,5 +163,15 @@
 @media (max-width: 1080px) {
   .wk2-row {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .wk2-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--wk-space-s);
+  }
+
+  .wk2-nav {
+    align-self: flex-start;
   }
 }
