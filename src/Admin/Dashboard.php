@@ -16,7 +16,7 @@ class Dashboard
             __('Waaskit UIX', 'waaskit-uix'),
             __('Waaskit UIX', 'waaskit-uix'),
             'manage_options',
-            'waaskit-uix',
+            'waaskit-uix-dashboard',
             [$this, 'render'],
             'dashicons-layout',
             3
@@ -26,31 +26,31 @@ class Dashboard
     public function render(): void
     {
         echo '<div class="wrap wk-uix-wrap">';
-        echo '<h1 class="wk-uix-title">Waaskit UIX</h1>';
-        echo '<div id="wk-uix-dashboard-root" class="wk-uix-dashboard"></div>';
+        echo '<div id="wk-uix-dashboard-root" class="wk-uix-dashboard"></div>'; // header + contenu gérés en JS
         echo '</div>';
     }
 
     public function enqueueAssets(string $hook): void
     {
-        if ($hook !== 'toplevel_page_waaskit-uix') {
+        if ($hook !== 'toplevel_page_waaskit-uix-dashboard') {
             return;
         }
 
-        // Styles scoped to our dashboard only.
+        $css_path = WKUIX_DIR . 'assets/css/dashboard.css';
+        $js_path  = WKUIX_DIR . 'assets/js/dashboard.js';
+
         wp_enqueue_style(
             'waaskit-uix-dashboard',
             WKUIX_URL . 'assets/css/dashboard.css',
             [],
-            WKUIX_VERSION
+            file_exists($css_path) ? filemtime($css_path) : WKUIX_VERSION
         );
 
-        // JS app (React-like via wp.element).
         wp_enqueue_script(
             'waaskit-uix-dashboard',
             WKUIX_URL . 'assets/js/dashboard.js',
             ['wp-element'],
-            WKUIX_VERSION,
+            file_exists($js_path) ? filemtime($js_path) : WKUIX_VERSION,
             true
         );
     }

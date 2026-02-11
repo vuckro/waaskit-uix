@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       Waaskit UIX
  * Description:       Modern, lightweight admin UI for WordPress. Uses a variable-based design system that adapts to your site's CSS framework (ACSS, Bricks, Core, or none).
- * Version:           0.1.0
+ * Version:           0.1.1
  * Requires at least: 6.0
  * Requires PHP:      8.0
  * Author:            Waaskit
@@ -20,7 +20,7 @@ if (! defined('ABSPATH')) {
 define('WKUIX_FILE', __FILE__);
 define('WKUIX_DIR', plugin_dir_path(__FILE__));
 define('WKUIX_URL', plugin_dir_url(__FILE__));
-define('WKUIX_VERSION', '0.1.0');
+define('WKUIX_VERSION', '0.1.1');
 
 // Simple PSR-4 autoloader for the Waaskit\UIX namespace.
 spl_autoload_register(function ($class) {
