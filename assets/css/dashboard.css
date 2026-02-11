@@ -1,6 +1,6 @@
 /*
- * Waaskit UIX - Dashboard V3.1
- * Header flotant sans ombres lourdes, cartes légères, pleine largeur.
+ * Waaskit UIX - Dashboard V3.2
+ * Header flottant, cartes alignées, sans ombres visibles.
  */
 
 :root {
@@ -19,7 +19,6 @@
   --wk-accent-soft: #e5e7eb;
 }
 
-/* Root: pleine largeur, sans carte globale */
 .waaskit-uix {
   margin: 20px 20px 20px 0;
 }
@@ -28,7 +27,7 @@
   /* pleine largeur dans la zone de contenu */
 }
 
-/* Header flottant, sans grosse ombre ni fond supplémentaire */
+/* Header flottant, sans ombre, sans H1 WP visible */
 .wk2-header {
   display: flex;
   align-items: center;
@@ -38,6 +37,11 @@
   border-radius: var(--wk-radius-m);
   border: 1px solid var(--wk-border-subtle);
   margin-bottom: var(--wk-space-l);
+}
+
+/* masque le titre H1 natif WP pour cette page (visuel uniquement) */
+body.toplevel_page_waaskit-uix-dashboard .wrap > h1 {
+  display: none;
 }
 
 .wk2-header-left {
@@ -99,17 +103,31 @@
   gap: var(--wk-space-m);
 }
 
+/* Cards flex: contenu en haut, meta en bas */
 .wk2-card {
   background: var(--wk-surface);
   border-radius: var(--wk-radius-m);
   padding: var(--wk-space-m);
   border: 1px solid var(--wk-border-subtle);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 160px;
 }
 
 .wk2-card-label {
   font-size: 13px;
   font-weight: 600;
   margin-bottom: var(--wk-space-s);
+}
+
+.wk2-card-body {
+  font-size: 13px;
+  color: var(--wk-text);
+}
+
+.wk2-card-footer {
+  margin-top: var(--wk-space-s);
 }
 
 .wk2-pills {
@@ -150,7 +168,6 @@
 }
 
 .wk2-meta {
-  margin-top: var(--wk-space-s);
   font-size: 11px;
   color: var(--wk-text-muted);
 }
