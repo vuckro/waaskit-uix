@@ -13,41 +13,25 @@ class Dashboard
 
     public function registerMenu(): void
     {
-        // Main dashboard
         add_menu_page(
             __('Waaskit UIX', 'waaskit-uix'),
             __('Waaskit UIX', 'waaskit-uix'),
             'manage_options',
             'waaskit-uix-dashboard',
-            [$this, 'renderDashboard'],
+            [$this, 'render'],
             'dashicons-layout',
             3
         );
-
-        // Design system page
-        add_submenu_page(
-            'waaskit-uix-dashboard',
-            __('Design system', 'waaskit-uix'),
-            __('Design system', 'waaskit-uix'),
-            'manage_options',
-            'waaskit-uix-design',
-            [$this, 'renderDesign']
-        );
     }
 
-    public function renderDashboard(): void
+    public function render(): void
     {
-        echo '<div class="waaskit-uix" id="waaskit-uix-app" data-wkuix-view="dashboard"></div>';
-    }
-
-    public function renderDesign(): void
-    {
-        echo '<div class="waaskit-uix" id="waaskit-uix-app" data-wkuix-view="design"></div>';
+        echo '<div class="waaskit-uix" id="waaskit-uix-app"></div>';
     }
 
     public function enqueueAssets(string $hook): void
     {
-        if ($hook !== 'toplevel_page_waaskit-uix-dashboard' && $hook !== 'waaskit-uix-dashboard_page_waaskit-uix-design') {
+        if ($hook !== 'toplevel_page_waaskit-uix-dashboard') {
             return;
         }
 
@@ -76,8 +60,6 @@ class Dashboard
             true
         );
 
-        $current_view = isset($_GET['page']) && $_GET['page'] === 'waaskit-uix-design' ? 'design' : 'dashboard';
-
         wp_localize_script(
             'waaskit-uix-dashboard',
             'WKUIX',
@@ -86,7 +68,6 @@ class Dashboard
                 'design'  => $design,
                 'ajaxUrl' => admin_url('admin-ajax.php'),
                 'nonce'   => wp_create_nonce('waaskit_uix_design'),
-                'view'    => $current_view,
             ]
         );
     }

@@ -3,18 +3,16 @@
 
   const LOGO_URL = 'https://www.waaskit.com/wp-content/uploads/2025/05/WaasKit-logo.svg';
 
-  function Header({ currentView }) {
-    function goTo(view) {
-      const base = window.location.href.split('?')[0];
-      const page = view === 'design' ? 'waaskit-uix-design' : 'waaskit-uix-dashboard';
-      const url = base + '?page=' + page;
-      window.location.assign(url);
-    }
-
+  function Header({ activeView, onChangeView }) {
     const [navOpen, setNavOpen] = useState(false);
 
     function toggleNav() {
       setNavOpen(open => !open);
+    }
+
+    function handleChange(view) {
+      onChangeView(view);
+      setNavOpen(false);
     }
 
     return h('header', { className: 'wk2-header' }, [
@@ -23,13 +21,13 @@
         h('nav', { className: 'wk2-nav-left' }, [
           h('button', {
             type: 'button',
-            className: 'wk2-nav-item' + (currentView === 'dashboard' ? ' wk2-nav-item--active' : ''),
-            onClick: function () { goTo('dashboard'); }
+            className: 'wk2-nav-item' + (activeView === 'dashboard' ? ' wk2-nav-item--active' : ''),
+            onClick: function () { handleChange('dashboard'); }
           }, 'Dashboard'),
           h('button', {
             type: 'button',
-            className: 'wk2-nav-item' + (currentView === 'design' ? ' wk2-nav-item--active' : ''),
-            onClick: function () { goTo('design'); }
+            className: 'wk2-nav-item' + (activeView === 'design' ? ' wk2-nav-item--active' : ''),
+            onClick: function () { handleChange('design'); }
           }, 'Design system')
         ])
       ]),
@@ -50,13 +48,13 @@
         }, [
           h('button', {
             type: 'button',
-            className: 'wk2-nav-item' + (currentView === 'dashboard' ? ' wk2-nav-item--active' : ''),
-            onClick: function () { goTo('dashboard'); }
+            className: 'wk2-nav-item' + (activeView === 'dashboard' ? ' wk2-nav-item--active' : ''),
+            onClick: function () { handleChange('dashboard'); }
           }, 'Dashboard'),
           h('button', {
             type: 'button',
-            className: 'wk2-nav-item' + (currentView === 'design' ? ' wk2-nav-item--active' : ''),
-            onClick: function () { goTo('design'); }
+            className: 'wk2-nav-item' + (activeView === 'design' ? ' wk2-nav-item--active' : ''),
+            onClick: function () { handleChange('design'); }
           }, 'Design system')
         ])
       ])
@@ -190,7 +188,7 @@
     const modules = [
       { key: 'admin-shell', label: 'Admin shell', status: 'Planned' },
       { key: 'dark-mode', label: 'Dark mode', status: 'Planned' },
-      { key: 'plugin-theming', label: 'Planned' }
+      { key: 'plugin-theming', label: 'Plugin theming', status: 'Planned' }
     ];
 
     return h('main', { className: 'wk2-main' }, [
@@ -215,11 +213,10 @@
   }
 
   function App() {
-    const currentView = (window.WKUIX && window.WKUIX.view) || 'dashboard';
-
+    const [activeView, setActiveView] = useState('dashboard');
     return h('div', { className: 'wk2-shell' }, [
-      h(Header, { currentView }),
-      currentView === 'design' ? h(DesignCard) : h(DashboardView)
+      h(Header, { activeView, onChangeView: setActiveView }),
+      activeView === 'design' ? h(DesignCard) : h(DashboardView)
     ]);
   }
 

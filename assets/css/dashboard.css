@@ -1,6 +1,6 @@
 /*
- * Waaskit UIX - Dashboard V4.1
- * Dashboard page (Modules) + Design system page (Design card).
+ * Waaskit UIX - Dashboard V4.2
+ * Single-page app: header + Dashboard view + Design system view.
  */
 
 :root {
@@ -30,7 +30,7 @@
   /* pleine largeur dans la zone de contenu */
 }
 
-/* Header flottant */
+/* Header */
 .wk2-header {
   display: flex;
   align-items: center;
@@ -42,8 +42,7 @@
   margin-bottom: var(--wk-space-l);
 }
 
-body.toplevel_page_waaskit-uix-dashboard .wrap > h1,
-body.waaskit-uix-dashboard_page_waaskit-uix-design .wrap > h1 {
+body.toplevel_page_waaskit-uix-dashboard .wrap > h1 {
   display: none;
 }
 
@@ -75,7 +74,7 @@ body.waaskit-uix-dashboard_page_waaskit-uix-design .wrap > h1 {
   border: none;
   background: transparent;
   font-size: 16px;
-  cursor: default; /* placeholder */
+  cursor: default;
 }
 
 .wk2-nav-toggle {
@@ -86,8 +85,7 @@ body.waaskit-uix-dashboard_page_waaskit-uix-design .wrap > h1 {
   cursor: pointer;
 }
 
-.wk2-nav,
-.wk2-nav-left {
+.wk2-nav {
   display: flex;
   align-items: center;
   gap: var(--wk-space-s);
