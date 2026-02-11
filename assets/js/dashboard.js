@@ -64,6 +64,8 @@
       started_at: null,
     };
 
+    const tasks = (window.WKUIX && window.WKUIX.tasks) || { now: [], next: [], planned: [] };
+
     const since = vibe.started_at ? new Date(vibe.started_at) : null;
     const now   = new Date();
     const elapsedMinutes = since ? Math.floor((now - since) / 60000) : null;
@@ -71,54 +73,58 @@
     return h('main', { className: 'wk2-main' }, [
       h('section', { className: 'wk2-row-single' }, [
         h('div', { className: 'wk2-card' }, [
-          h('div', { className: 'wk2-card-section' }, [
-            h('div', { className: 'wk2-card-label' }, 'Vibe coding'),
-            h('div', { className: 'wk2-card-body' }, [
-              h('p', null, [
-                'Mode: ',
-                h('strong', null, vibe.mode === 'cron' ? 'Cron (auto)' : 'Manual')
+          h('div', { className: 'wk2-card-header' }, [
+            h('div', null, [
+              h('div', { className: 'wk2-card-title' }, 'Dev board'),
+              h('div', { className: 'wk2-card-subtitle' }, 'Now / Next / Planned')
+            ]),
+            h('span', { className: 'wk2-card-tag' }, vibe.mode === 'cron' ? 'AUTO' : 'MANUAL')
+          ]),
+          h('div', { className: 'wk2-card-body' }, [
+            h('p', null, [
+              'Current task: ',
+              h('strong', null, vibe.current_task)
+            ]),
+            h('p', null, [
+              'Last action: ',
+              h('span', null, vibe.last_action)
+            ]),
+            h('p', null, [
+              'Next: ',
+              h('span', null, vibe.next_step)
+            ]),
+            h('div', { className: 'wk2-vibe-columns' }, [
+              h('div', { className: 'wk2-vibe-column' }, [
+                h('div', { className: 'wk2-vibe-column-title' }, 'Now'),
+                h('ul', null,
+                  (tasks.now || []).map(function (t) {
+                    return h('li', { key: t.id }, t.title);
+                  })
+                )
               ]),
-              h('p', null, [
-                'Current task: ',
-                h('strong', null, vibe.current_task)
+              h('div', { className: 'wk2-vibe-column' }, [
+                h('div', { className: 'wk2-vibe-column-title' }, 'Next'),
+                h('ul', null,
+                  (tasks.next || []).map(function (t) {
+                    return h('li', { key: t.id }, t.title);
+                  })
+                )
               ]),
-              h('p', null, [
-                'Last action: ',
-                h('span', null, vibe.last_action)
-              ]),
-              h('p', null, [
-                'Next: ',
-                h('span', null, vibe.next_step)
-              ]),
-              h('div', { className: 'wk2-vibe-columns' }, [
-                h('div', { className: 'wk2-vibe-column' }, [
-                  h('div', { className: 'wk2-vibe-column-title' }, 'Now'),
-                  h('ul', null, [
-                    h('li', null, vibe.current_task || '—')
-                  ])
-                ]),
-                h('div', { className: 'wk2-vibe-column' }, [
-                  h('div', { className: 'wk2-vibe-column-title' }, 'Next'),
-                  h('ul', null, [
-                    h('li', null, vibe.next_step || '—')
-                  ])
-                ]),
-                h('div', { className: 'wk2-vibe-column' }, [
-                  h('div', { className: 'wk2-vibe-column-title' }, 'Planned'),
-                  h('ul', null, [
-                    h('li', null, 'DesignSystem service'),
-                    h('li', null, 'Palette generator'),
-                    h('li', null, 'ACSS import prototype')
-                  ])
-                ])
-              ]),
-              elapsedMinutes !== null && h('p', null, [
-                'Dev session: ~', elapsedMinutes, ' min'
+              h('div', { className: 'wk2-vibe-column' }, [
+                h('div', { className: 'wk2-vibe-column-title' }, 'Planned'),
+                h('ul', null,
+                  (tasks.planned || []).map(function (t) {
+                    return h('li', { key: t.id }, t.title);
+                  })
+                )
               ])
+            ]),
+            elapsedMinutes !== null && h('p', null, [
+              'Dev session: ~', elapsedMinutes, ' min'
             ])
           ]),
           h('div', { className: 'wk2-card-footer' },
-            h('div', { className: 'wk2-meta' }, 'This card is here to track dev state (manual/cron, tasks, timeline).')
+            h('div', { className: 'wk2-meta' }, 'Board is static for now; later it can be driven by cron + task updates.')
           )
         ])
       ])
@@ -132,7 +138,7 @@
     const g = ((num >> 8) & 0x00ff) + percent;
     const b = (num & 0x0000ff) + percent;
     const clamp = v => Math.max(0, Math.min(255, v));
-    return '#' + ((1 << 24) + (clamp(r) << 16) + (clamp(g) << 8) + clamp(b)).toString(16).slice(1);
+    return '#' + ((1 << 24) + (clamp(r) << 16) + (clamp(g) << 8) + (clamp(b))).toString(16).slice(1);
   }
 
   function DesignCard() {
@@ -186,53 +192,56 @@
     return h('main', { className: 'wk2-main' }, [
       h('section', { className: 'wk2-row-single' }, [
         h('div', { className: 'wk2-card' }, [
-          h('div', { className: 'wk2-card-section' }, [
-            h('div', { className: 'wk2-card-label' }, 'Design system'),
-            h('div', { className: 'wk2-card-body' }, [
-              h('div', { className: 'wk2-design-row' }, [
-                h('div', { className: 'wk2-design-group' }, [
-                  h('label', null, 'Primary color'),
-                  h('input', {
-                    type: 'color',
-                    value: primary,
-                    onChange: function (e) { setPrimary(e.target.value); }
-                  })
-                ]),
-                h('div', { className: 'wk2-design-group' }, [
-                  h('label', null, 'Body font'),
-                  h('input', {
-                    type: 'text',
-                    className: 'wk2-input',
-                    placeholder: 'e.g. system-ui, Inter, Sora…',
-                    value: fontBody,
-                    onChange: function (e) { setFontBody(e.target.value); }
-                  })
-                ]),
-                h('div', { className: 'wk2-design-group' }, [
-                  h('label', null, 'Heading font'),
-                  h('input', {
-                    type: 'text',
-                    className: 'wk2-input',
-                    placeholder: 'e.g. inherit, Inter, Sora…',
-                    value: fontHeading,
-                    onChange: function (e) { setFontHeading(e.target.value); }
-                  })
-                ])
-              ]),
-              h('div', { className: 'wk2-typo-preview' }, [
-                h('div', { className: 'wk2-typo-heading', style: { fontFamily: fontHeading || undefined } }, 'Heading preview'),
-                h('div', { className: 'wk2-typo-body', style: { fontFamily: fontBody || undefined } }, 'Body text preview')
-              ]),
-              h('div', { className: 'wk2-palette' },
-                palette.map(function (c, idx) {
-                  return h('div', {
-                    key: idx,
-                    className: 'wk2-swatch',
-                    style: { backgroundColor: c }
-                  });
-                })
-              )
+          h('div', { className: 'wk2-card-header' }, [
+            h('div', null, [
+              h('div', { className: 'wk2-card-title' }, 'Design system'),
+              h('div', { className: 'wk2-card-subtitle' }, 'Primary color & typography')
             ])
+          ]),
+          h('div', { className: 'wk2-card-body' }, [
+            h('div', { className: 'wk2-design-row' }, [
+              h('div', { className: 'wk2-design-group' }, [
+                h('label', null, 'Primary color'),
+                h('input', {
+                  type: 'color',
+                  value: primary,
+                  onChange: function (e) { setPrimary(e.target.value); }
+                })
+              ]),
+              h('div', { className: 'wk2-design-group' }, [
+                h('label', null, 'Body font'),
+                h('input', {
+                  type: 'text',
+                  className: 'wk2-input',
+                  placeholder: 'e.g. system-ui, Inter, Sora…',
+                  value: fontBody,
+                  onChange: function (e) { setFontBody(e.target.value); }
+                })
+              ]),
+              h('div', { className: 'wk2-design-group' }, [
+                h('label', null, 'Heading font'),
+                h('input', {
+                  type: 'text',
+                  className: 'wk2-input',
+                  placeholder: 'e.g. inherit, Inter, Sora…',
+                  value: fontHeading,
+                  onChange: function (e) { setFontHeading(e.target.value); }
+                })
+              ])
+            ]),
+            h('div', { className: 'wk2-typo-preview' }, [
+              h('div', { className: 'wk2-typo-heading', style: { fontFamily: fontHeading || undefined } }, 'Heading preview'),
+              h('div', { className: 'wk2-typo-body', style: { fontFamily: fontBody || undefined } }, 'Body text preview')
+            ]),
+            h('div', { className: 'wk2-palette' },
+              palette.map(function (c, idx) {
+                return h('div', {
+                  key: idx,
+                  className: 'wk2-swatch',
+                  style: { backgroundColor: c }
+                });
+              })
+            )
           ]),
           h('div', { className: 'wk2-card-footer' }, [
             h('button', {

@@ -42,6 +42,29 @@ class Dashboard
             'font_heading' => '',
         ];
 
+        // Dev board tasks + vibe state (hard-coded for now, will evolve).
+        $tasks = $settings['tasks'] ?? [
+            'now' => [
+                ['id' => 't1', 'title' => 'Clarifier architecture dashboard', 'desc' => 'Header SPA + vues Dashboard/Design system'],
+            ],
+            'next' => [
+                ['id' => 't2', 'title' => 'DesignSystem service PHP', 'desc' => 'getDesign/saveDesign/computePalette'],
+                ['id' => 't3', 'title' => 'Palette primaire', 'desc' => 'ultra-light → ultra-dark + hover'],
+            ],
+            'planned' => [
+                ['id' => 't4', 'title' => 'Import ACSS JSON', 'desc' => 'remplir design depuis export'],
+                ['id' => 't5', 'title' => 'Automation CLR', 'desc' => 'cron 8min sur site 2'],
+            ],
+        ];
+
+        $vibe = $settings['vibe'] ?? [
+            'mode'         => 'manual',
+            'current_task' => 'Setup dev board dashboard',
+            'last_action'  => 'Dashboard SPA header + basic Vibe card',
+            'next_step'    => 'Move tasks into DesignSystem service',
+            'started_at'   => time() * 1000,
+        ];
+
         $css_path = WKUIX_DIR . 'assets/css/dashboard.css';
         $js_path  = WKUIX_DIR . 'assets/js/dashboard.js';
 
@@ -52,13 +75,10 @@ class Dashboard
             file_exists($css_path) ? filemtime($css_path) : WKUIX_VERSION
         );
 
-        // Apply design system tokens (accent color + fonts) to CSS variables.
+        // Apply design tokens (accent + fonts) if configured.
         $customCss = '';
-        if (!empty($design['primary'])) {
-            $primary = $design['primary'];
-            if (preg_match('/^#[0-9a-fA-F]{6}$/', $primary)) {
-                $customCss .= sprintf(':root{--wk-accent:%s;}\n', $primary);
-            }
+        if (!empty($design['primary']) && preg_match('/^#[0-9a-fA-F]{6}$/', $design['primary'])) {
+            $customCss .= sprintf(':root{--wk-accent:%s;}' . "\n", $design['primary']);
         }
         $fontBody    = $design['font_body'] ?? '';
         $fontHeading = $design['font_heading'] ?? '';
@@ -90,6 +110,8 @@ class Dashboard
             [
                 'version' => WKUIX_VERSION,
                 'design'  => $design,
+                'tasks'   => $tasks,
+                'vibe'    => $vibe,
                 'ajaxUrl' => admin_url('admin-ajax.php'),
                 'nonce'   => wp_create_nonce('waaskit_uix_design'),
             ]
