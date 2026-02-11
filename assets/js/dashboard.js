@@ -56,48 +56,69 @@
   }
 
   function DashboardView() {
-    const modules = [
-      { key: 'admin-shell', label: 'Admin shell', status: 'Planned' },
-      { key: 'dark-mode', label: 'Dark mode', status: 'Planned' },
-      { key: 'plugin-theming', label: 'Plugin theming', status: 'Planned' }
-    ];
-
     const vibe = (window.WKUIX && window.WKUIX.vibe) || {
       mode: 'manual',
       current_task: 'Idle',
       last_action: 'None yet',
       next_step: 'Define next task',
+      started_at: null,
     };
+
+    const since = vibe.started_at ? new Date(vibe.started_at) : null;
+    const now   = new Date();
+    const elapsedMinutes = since ? Math.floor((now - since) / 60000) : null;
 
     return h('main', { className: 'wk2-main' }, [
       h('section', { className: 'wk2-row-single' }, [
         h('div', { className: 'wk2-card' }, [
           h('div', { className: 'wk2-card-section' }, [
-            h('div', { className: 'wk2-card-label' }, 'Modules'),
-            h('div', { className: 'wk2-card-body' }, [
-              h('div', { className: 'wk2-pills' },
-                modules.map(function (m) {
-                  return h('span', { key: m.key, className: 'wk2-pill' }, m.label + ' · ' + m.status);
-                })
-              )
-            ])
-          ]),
-          h('div', { className: 'wk2-card-footer' },
-            h('div', { className: 'wk2-meta' }, 'Version ' + (window.WKUIX && window.WKUIX.version ? window.WKUIX.version : '0.1.1'))
-          )
-        ]),
-        h('div', { className: 'wk2-card' }, [
-          h('div', { className: 'wk2-card-section' }, [
             h('div', { className: 'wk2-card-label' }, 'Vibe coding'),
             h('div', { className: 'wk2-card-body' }, [
-              h('p', null, ['Mode: ', h('strong', null, vibe.mode)]),
-              h('p', null, ['Current task: ', h('strong', null, vibe.current_task)]),
-              h('p', null, ['Last action: ', h('span', null, vibe.last_action)]),
-              h('p', null, ['Next: ', h('span', null, vibe.next_step)])
+              h('p', null, [
+                'Mode: ',
+                h('strong', null, vibe.mode === 'cron' ? 'Cron (auto)' : 'Manual')
+              ]),
+              h('p', null, [
+                'Current task: ',
+                h('strong', null, vibe.current_task)
+              ]),
+              h('p', null, [
+                'Last action: ',
+                h('span', null, vibe.last_action)
+              ]),
+              h('p', null, [
+                'Next: ',
+                h('span', null, vibe.next_step)
+              ]),
+              h('div', { className: 'wk2-vibe-columns' }, [
+                h('div', { className: 'wk2-vibe-column' }, [
+                  h('div', { className: 'wk2-vibe-column-title' }, 'Now'),
+                  h('ul', null, [
+                    h('li', null, vibe.current_task || '—')
+                  ])
+                ]),
+                h('div', { className: 'wk2-vibe-column' }, [
+                  h('div', { className: 'wk2-vibe-column-title' }, 'Next'),
+                  h('ul', null, [
+                    h('li', null, vibe.next_step || '—')
+                  ])
+                ]),
+                h('div', { className: 'wk2-vibe-column' }, [
+                  h('div', { className: 'wk2-vibe-column-title' }, 'Planned'),
+                  h('ul', null, [
+                    h('li', null, 'DesignSystem service'),
+                    h('li', null, 'Palette generator'),
+                    h('li', null, 'ACSS import prototype')
+                  ])
+                ])
+              ]),
+              elapsedMinutes !== null && h('p', null, [
+                'Dev session: ~', elapsedMinutes, ' min'
+              ])
             ])
           ]),
           h('div', { className: 'wk2-card-footer' },
-            h('div', { className: 'wk2-meta' }, 'This card will track dev state (manual/cron, tasks, etc.).')
+            h('div', { className: 'wk2-meta' }, 'This card is here to track dev state (manual/cron, tasks, timeline).')
           )
         ])
       ])
