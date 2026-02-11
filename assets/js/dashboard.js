@@ -4,21 +4,25 @@
   const LOGO_URL = 'https://www.waaskit.com/wp-content/uploads/2025/05/WaasKit-logo.svg';
 
   function Header({ active, onChange }) {
-    return h('div', { className: 'wk-uix-header' }, [
-      h('div', { className: 'wk-uix-brand' }, [
-        h('div', { className: 'wk-uix-logo' },
-          h('img', { src: LOGO_URL, alt: 'Waaskit' })
-        ),
-        h('nav', { className: 'wk-uix-nav' }, [
-          h('span', {
-            className: 'wk-uix-nav-item ' + (active === 'dashboard' ? 'wk-uix-nav-item--active' : ''),
-            onClick: function () { onChange('dashboard'); }
-          }, 'Dashboard'),
-          h('span', {
-            className: 'wk-uix-nav-item ' + (active === 'settings' ? 'wk-uix-nav-item--active' : ''),
-            onClick: function () { onChange('settings'); }
-          }, 'Settings')
+    return h('header', { className: 'wk2-header' }, [
+      h('div', { className: 'wk2-header-left' }, [
+        h('div', { className: 'wk2-logo' }, h('img', { src: LOGO_URL, alt: 'Waaskit' })),
+        h('div', { className: 'wk2-header-text' }, [
+          h('div', { className: 'wk2-header-title' }, 'Dashboard'),
+          h('div', { className: 'wk2-header-subtitle' }, 'Admin UI for your WordPress stack')
         ])
+      ]),
+      h('nav', { className: 'wk2-nav' }, [
+        h('button', {
+          type: 'button',
+          className: 'wk2-nav-item' + (active === 'dashboard' ? ' wk2-nav-item--active' : ''),
+          onClick: function () { onChange('dashboard'); }
+        }, 'Overview'),
+        h('button', {
+          type: 'button',
+          className: 'wk2-nav-item' + (active === 'settings' ? ' wk2-nav-item--active' : ''),
+          onClick: function () { onChange('settings'); }
+        }, 'Settings')
       ])
     ]);
   }
@@ -36,45 +40,54 @@
       { key: 'bricks', label: 'Bricks', detected: true }
     ];
 
-    return h('div', { className: 'wk-uix-grid' }, [
-      h('section', { className: 'wk-uix-card' }, [
-        h('h2', null, 'Overview'),
-        h('p', null, 'High-level view of Waaskit UIX modules on this site.'),
-        h('div', { className: 'wk-uix-pills' },
-          modules.map(function (m) {
-            return h('span', { key: m.key, className: 'wk-uix-pill' }, m.label + ' · ' + m.status);
-          })
-        ),
-        h('div', { className: 'wk-uix-meta' }, 'Version: ' + (window.WKUIX && WKUIX.version ? WKUIX.version : '0.1.1'))
-      ]),
-      h('aside', { className: 'wk-uix-card wk-uix-card--secondary' }, [
-        h('h2', null, 'Frameworks'),
-        h('p', null, 'Detected UI frameworks (read-only for now):'),
-        h('ul', null,
-          frameworks.map(function (f) {
-            return h('li', { key: f.key }, f.label + ' · ' + (f.detected ? 'Detected' : 'Not detected'));
-          })
-        ),
-        h('div', { className: 'wk-uix-meta' }, 'Later: choose which framework to use as design source.')
+    return h('main', { className: 'wk2-main' }, [
+      h('section', { className: 'wk2-row' }, [
+        h('div', { className: 'wk2-card' }, [
+          h('div', { className: 'wk2-card-label' }, 'Modules'),
+          h('div', { className: 'wk2-pills' },
+            modules.map(function (m) {
+              return h('span', { key: m.key, className: 'wk2-pill' }, m.label + ' · ' + m.status);
+            })
+          ),
+          h('div', { className: 'wk2-meta' }, 'Version ' + (window.WKUIX && WKUIX.version ? WKUIX.version : '0.1.1'))
+        ]),
+        h('div', { className: 'wk2-card' }, [
+          h('div', { className: 'wk2-card-label' }, 'Frameworks'),
+          h('ul', { className: 'wk2-list' },
+            frameworks.map(function (f) {
+              return h('li', { key: f.key }, [
+                h('span', null, f.label),
+                h('span', { className: 'wk2-tag' }, f.detected ? 'Detected' : 'Not detected')
+              ]);
+            })
+          )
+        ]),
+        h('div', { className: 'wk2-card' }, [
+          h('div', { className: 'wk2-card-label' }, 'Next steps'),
+          h('p', null, 'Define design tokens, then connect ACSS/Core/Bricks as design sources.'),
+          h('p', { className: 'wk2-meta' }, 'This block can later show recent activity or tips.')
+        ])
       ])
     ]);
   }
 
   function SettingsView() {
-    return h('div', { className: 'wk-uix-card' }, [
-      h('h2', null, 'Settings'),
-      h('p', null, 'Settings will live here (modules, integrations, etc.). For now, this is just a placeholder.')
+    return h('main', { className: 'wk2-main' }, [
+      h('section', { className: 'wk2-row' }, [
+        h('div', { className: 'wk2-card' }, [
+          h('div', { className: 'wk2-card-label' }, 'Settings'),
+          h('p', null, 'Settings will live here (modules, integrations, etc.). For now, this is just a placeholder.')
+        ])
+      ])
     ]);
   }
 
   function App() {
     const [activeView, setActiveView] = useState('dashboard');
 
-    return h('div', null, [
+    return h('div', { className: 'wk2-shell' }, [
       h(Header, { active: activeView, onChange: setActiveView }),
-      h('div', { className: 'wk-uix-main' }, [
-        activeView === 'dashboard' ? h(DashboardView) : h(SettingsView)
-      ])
+      activeView === 'dashboard' ? h(DashboardView) : h(SettingsView)
     ]);
   }
 
