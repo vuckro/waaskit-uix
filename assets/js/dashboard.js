@@ -9,7 +9,7 @@
         h('div', { className: 'wk-uix-logo' },
           h('img', { src: LOGO_URL, alt: 'Waaskit' })
         ),
-        h('div', { className: 'wk-uix-brand-text' }, 'Dashboard'),
+        h('div', { className: 'wk-uix-brand-text' }, 'Waaskit UIX'),
         h('nav', { className: 'wk-uix-nav' }, [
           h('span', {
             className: 'wk-uix-nav-item ' + (active === 'dashboard' ? 'wk-uix-nav-item--active' : ''),
@@ -19,12 +19,6 @@
             className: 'wk-uix-nav-item ' + (active === 'settings' ? 'wk-uix-nav-item--active' : ''),
             onClick: function () { onChange('settings'); }
           }, 'Settings')
-        ])
-      ]),
-      h('div', { className: 'wk-uix-header-actions' }, [
-        h('button', { type: 'button', className: 'wk-uix-icon-button', 'aria-label': 'Open settings' }, [
-          h('span', null, 'Settings'),
-          h('span', null, '⚙')
         ])
       ])
     ]);
@@ -79,7 +73,7 @@
 
     return h('div', null, [
       h(Header, { active: activeView, onChange: setActiveView }),
-      h('div', { className: 'wk-uix-dashboard' }, [
+      h('div', { className: 'wk-uix-main' }, [
         activeView === 'dashboard' ? h(DashboardView) : h(SettingsView)
       ])
     ]);

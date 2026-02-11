@@ -1,11 +1,10 @@
 /*
  * Waaskit UIX - Dashboard shell
- * Hero + content, simplifié, inspiré des apps Fluent.
+ * Hero blanc + contenu en pleine largeur, style app.
  */
 
 :root {
   --wk-surface: #ffffff;
-  --wk-surface-alt: #f8fafc;
   --wk-border-subtle: #e5e7eb;
   --wk-text: #111827;
   --wk-text-muted: #6b7280;
@@ -19,17 +18,20 @@
   --wk-accent-soft: #e5e7eb;
 }
 
-/* Root app container, plein écran dans l'admin */
+/* Root app container, pleine largeur dans l'admin */
 .waaskit-uix {
   margin: 20px 20px 20px 0;
 }
 
-/* Header / hero */
+/* Hero: fond blanc, logo + nav à gauche */
 .wk-uix-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: var(--wk-space-m);
+  padding: var(--wk-space-m) var(--wk-space-m) var(--wk-space-s);
+  background: var(--wk-surface);
+  border-radius: var(--wk-radius-m) var(--wk-radius-m) 0 0;
+  border-bottom: 1px solid var(--wk-border-subtle);
 }
 
 .wk-uix-brand {
@@ -66,34 +68,15 @@
   color: var(--wk-text);
 }
 
-.wk-uix-header-actions {
-  display: flex;
-  align-items: center;
-  gap: var(--wk-space-s);
-}
-
-.wk-uix-icon-button {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 10px;
-  border-radius: 999px;
-  border: 1px solid var(--wk-border-subtle);
+/* Corps: fond blanc en pleine largeur, plus de carte dans carte */
+.wk-uix-main {
   background: var(--wk-surface);
-  cursor: pointer;
-  font-size: 12px;
-  color: var(--wk-text-muted);
-}
-
-/* Carte principale */
-.wk-uix-dashboard {
-  background: var(--wk-surface);
-  border-radius: var(--wk-radius-m);
+  border-radius: 0 0 var(--wk-radius-m) var(--wk-radius-m);
   padding: var(--wk-space-m);
-  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+  border: 1px solid var(--wk-border-subtle);
+  border-top: none;
 }
 
-/* Contenu interne, plus léger */
 .wk-uix-grid {
   display: grid;
   grid-template-columns: minmax(0, 2fr) minmax(0, 1.2fr);
