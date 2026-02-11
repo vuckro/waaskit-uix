@@ -38,7 +38,7 @@
             type: 'button',
             className: 'wk2-nav-item' + (active === 'dashboard' ? ' wk2-nav-item--active' : ''),
             onClick: function () { handleChange('dashboard'); }
-          }, 'Overview'),
+          }, 'Dashboard'),
           h('button', {
             type: 'button',
             className: 'wk2-nav-item' + (active === 'settings' ? ' wk2-nav-item--active' : ''),
