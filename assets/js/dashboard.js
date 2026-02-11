@@ -1,24 +1,31 @@
 (function () {
   const { createElement: h, render, useState } = wp.element;
 
+  const LOGO_URL = 'https://www.waaskit.com/wp-content/uploads/2025/05/WaasKit-logo.svg';
+
   function Header({ active, onChange }) {
     return h('div', { className: 'wk-uix-header' }, [
       h('div', { className: 'wk-uix-brand' }, [
-        h('div', { className: 'wk-uix-logo' }),
-        h('div', { className: 'wk-uix-brand-text' }, 'Waaskit UIX')
-      ]),
-      h('nav', { className: 'wk-uix-nav' }, [
-        h('span', {
-          className: 'wk-uix-nav-item ' + (active === 'dashboard' ? 'wk-uix-nav-item--active' : ''),
-          onClick: function () { onChange('dashboard'); }
-        }, 'Dashboard'),
-        h('span', {
-          className: 'wk-uix-nav-item ' + (active === 'settings' ? 'wk-uix-nav-item--active' : ''),
-          onClick: function () { onChange('settings'); }
-        }, 'Settings')
+        h('div', { className: 'wk-uix-logo' },
+          h('img', { src: LOGO_URL, alt: 'Waaskit' })
+        ),
+        h('div', { className: 'wk-uix-brand-text' }, 'Dashboard'),
+        h('nav', { className: 'wk-uix-nav' }, [
+          h('span', {
+            className: 'wk-uix-nav-item ' + (active === 'dashboard' ? 'wk-uix-nav-item--active' : ''),
+            onClick: function () { onChange('dashboard'); }
+          }, 'Dashboard'),
+          h('span', {
+            className: 'wk-uix-nav-item ' + (active === 'settings' ? 'wk-uix-nav-item--active' : ''),
+            onClick: function () { onChange('settings'); }
+          }, 'Settings')
+        ])
       ]),
       h('div', { className: 'wk-uix-header-actions' }, [
-        h('button', { type: 'button', className: 'wk-uix-icon-button', 'aria-label': 'Settings' }, '⚙')
+        h('button', { type: 'button', className: 'wk-uix-icon-button', 'aria-label': 'Open settings' }, [
+          h('span', null, 'Settings'),
+          h('span', null, '⚙')
+        ])
       ])
     ]);
   }

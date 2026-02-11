@@ -1,11 +1,11 @@
 /*
  * Waaskit UIX - Dashboard shell
- * Structure inspirée de Fluent (root app + header + contenu).
+ * Hero + content, simplifié, inspiré des apps Fluent.
  */
 
 :root {
   --wk-surface: #ffffff;
-  --wk-surface-alt: #f3f4f6;
+  --wk-surface-alt: #f8fafc;
   --wk-border-subtle: #e5e7eb;
   --wk-text: #111827;
   --wk-text-muted: #6b7280;
@@ -24,7 +24,7 @@
   margin: 20px 20px 20px 0;
 }
 
-/* Header d'application */
+/* Header / hero */
 .wk-uix-header {
   display: flex;
   align-items: center;
@@ -38,22 +38,22 @@
   gap: var(--wk-space-s);
 }
 
-.wk-uix-logo {
-  width: 28px;
-  height: 28px;
-  border-radius: 999px;
-  background: var(--wk-accent);
+.wk-uix-logo img {
+  height: 24px;
+  display: block;
 }
 
 .wk-uix-brand-text {
   font-weight: 600;
   color: var(--wk-text);
+  font-size: 14px;
 }
 
 .wk-uix-nav {
   display: flex;
   align-items: center;
   gap: var(--wk-space-s);
+  margin-left: var(--wk-space-l);
 }
 
 .wk-uix-nav-item {
@@ -73,25 +73,27 @@
 }
 
 .wk-uix-icon-button {
-  width: 28px;
-  height: 28px;
-  border-radius: 999px;
-  border: 1px solid var(--wk-border-subtle);
   display: inline-flex;
   align-items: center;
-  justify-content: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--wk-border-subtle);
   background: var(--wk-surface);
   cursor: pointer;
+  font-size: 12px;
+  color: var(--wk-text-muted);
 }
 
-/* Carte principale en pleine largeur */
+/* Carte principale */
 .wk-uix-dashboard {
   background: var(--wk-surface);
   border-radius: var(--wk-radius-m);
   padding: var(--wk-space-m);
-  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
 }
 
+/* Contenu interne, plus léger */
 .wk-uix-grid {
   display: grid;
   grid-template-columns: minmax(0, 2fr) minmax(0, 1.2fr);
@@ -99,9 +101,10 @@
 }
 
 .wk-uix-card {
-  background: var(--wk-surface-alt);
+  background: var(--wk-surface);
   border-radius: var(--wk-radius-m);
   padding: var(--wk-space-m);
+  border: 1px solid var(--wk-border-subtle);
 }
 
 .wk-uix-card h2 {
