@@ -19,10 +19,9 @@
   --wk-accent-soft: #e5e7eb;
 }
 
-/* Root app container, comme .fluent-forms */
+/* Root app container, plein écran dans l'admin */
 .waaskit-uix {
-  max-width: 1100px;
-  margin: 20px auto;
+  margin: 20px 20px 20px 0;
 }
 
 /* Header d'application */
@@ -85,7 +84,7 @@
   cursor: pointer;
 }
 
-/* Carte principale */
+/* Carte principale en pleine largeur */
 .wk-uix-dashboard {
   background: var(--wk-surface);
   border-radius: var(--wk-radius-m);
