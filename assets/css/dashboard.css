@@ -1,6 +1,6 @@
 /*
- * Waaskit UIX - Dashboard V3.8
- * Header flottant, cartes groupées, menu off-canvas + section Design (couleur & typo).
+ * Waaskit UIX - Dashboard V4.0
+ * Header flottant, cartes groupées, Design card (color & typography) avec sauvegarde.
  */
 
 :root {
@@ -184,6 +184,10 @@ body.toplevel_page_waaskit-uix-dashboard .wrap > h1 {
   color: var(--wk-text-muted);
 }
 
+.wk2-meta-inline {
+  margin-left: var(--wk-space-s);
+}
+
 /* Design card */
 .wk2-design-row {
   display: flex;
@@ -199,10 +203,20 @@ body.toplevel_page_waaskit-uix-dashboard .wrap > h1 {
   margin-bottom: var(--wk-space-xs);
 }
 
+.wk2-input {
+  width: 100%;
+  max-width: 220px;
+  padding: 6px 8px;
+  border-radius: var(--wk-radius-s);
+  border: 1px solid var(--wk-border-subtle);
+  font-size: 13px;
+}
+
 .wk2-typo-preview {
   border-radius: var(--wk-radius-s);
   border: 1px solid var(--wk-border-subtle);
   padding: var(--wk-space-s);
+  margin-bottom: var(--wk-space-m);
 }
 
 .wk2-typo-heading {
@@ -225,6 +239,21 @@ body.toplevel_page_waaskit-uix-dashboard .wrap > h1 {
   height: 24px;
   border-radius: var(--wk-radius-s);
   border: 1px solid var(--wk-border-subtle);
+}
+
+.wk2-button {
+  border: none;
+  border-radius: var(--wk-radius-s);
+  padding: 6px 12px;
+  font-size: 13px;
+  cursor: pointer;
+  background: var(--wk-accent);
+  color: #fff;
+}
+
+.wk2-button[disabled] {
+  opacity: 0.6;
+  cursor: default;
 }
 
 /* Responsive + off-canvas nav */

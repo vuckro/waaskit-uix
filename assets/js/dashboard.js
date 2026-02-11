@@ -59,6 +59,116 @@
     return '#' + ((1 << 24) + (clamp(r) << 16) + (clamp(g) << 8) + clamp(b)).toString(16).slice(1);
   }
 
+  function DesignCard() {
+    const initialDesign = (window.WKUIX && window.WKUIX.design) || {};
+    const [primary, setPrimary] = useState(initialDesign.primary || '#111827');
+    const [fontBody, setFontBody] = useState(initialDesign.font_body || '');
+    const [fontHeading, setFontHeading] = useState(initialDesign.font_heading || '');
+    const [saving, setSaving] = useState(false);
+    const [message, setMessage] = useState('');
+
+    const palette = [
+      primary,
+      shadeColor(primary, 20),
+      shadeColor(primary, -20),
+      shadeColor(primary, 40),
+      shadeColor(primary, -40)
+    ];
+
+    function handleSave() {
+      if (!window.WKUIX || !window.WKUIX.ajaxUrl || !window.WKUIX.nonce) {
+        setMessage('Missing AJAX configuration');
+        return;
+      }
+      setSaving(true);
+      setMessage('');
+      const data = new window.FormData();
+      data.append('action', 'waaskit_uix_save_design');
+      data.append('nonce', window.WKUIX.nonce);
+      data.append('primary', primary);
+      data.append('font_body', fontBody);
+      data.append('font_heading', fontHeading);
+
+      window.fetch(window.WKUIX.ajaxUrl, {
+        method: 'POST',
+        credentials: 'same-origin',
+        body: data
+      }).then(function (res) {
+        return res.json();
+      }).then(function (json) {
+        if (json && json.success) {
+          setMessage('Design saved');
+        } else {
+          setMessage(json && json.data && json.data.message ? json.data.message : 'Error saving design');
+        }
+      }).catch(function () {
+        setMessage('Network error while saving design');
+      }).finally(function () {
+        setSaving(false);
+      });
+    }
+
+    return h('div', { className: 'wk2-card' }, [
+      h('div', { className: 'wk2-card-section' }, [
+        h('div', { className: 'wk2-card-label' }, 'Design (color & typography)'),
+        h('div', { className: 'wk2-card-body' }, [
+          h('div', { className: 'wk2-design-row' }, [
+            h('div', { className: 'wk2-design-group' }, [
+              h('label', null, 'Primary color'),
+              h('input', {
+                type: 'color',
+                value: primary,
+                onChange: function (e) { setPrimary(e.target.value); }
+              })
+            ]),
+            h('div', { className: 'wk2-design-group' }, [
+              h('label', null, 'Body font'),
+              h('input', {
+                type: 'text',
+                className: 'wk2-input',
+                placeholder: 'e.g. system-ui, Inter, Sora…',
+                value: fontBody,
+                onChange: function (e) { setFontBody(e.target.value); }
+              })
+            ]),
+            h('div', { className: 'wk2-design-group' }, [
+              h('label', null, 'Heading font'),
+              h('input', {
+                type: 'text',
+                className: 'wk2-input',
+                placeholder: 'e.g. inherit, Inter, Sora…',
+                value: fontHeading,
+                onChange: function (e) { setFontHeading(e.target.value); }
+              })
+            ])
+          ]),
+          h('div', { className: 'wk2-typo-preview' }, [
+            h('div', { className: 'wk2-typo-heading', style: { fontFamily: fontHeading || undefined } }, 'Heading preview'),
+            h('div', { className: 'wk2-typo-body', style: { fontFamily: fontBody || undefined } }, 'Body text preview')
+          ]),
+          h('div', { className: 'wk2-palette' },
+            palette.map(function (c, idx) {
+              return h('div', {
+                key: idx,
+                className: 'wk2-swatch',
+                style: { backgroundColor: c }
+              });
+            })
+          )
+        ])
+      ]),
+      h('div', { className: 'wk2-card-footer' }, [
+        h('button', {
+          type: 'button',
+          className: 'wk2-button',
+          disabled: saving,
+          onClick: handleSave
+        }, saving ? 'Saving…' : 'Save design'),
+        message && h('span', { className: 'wk2-meta wk2-meta-inline' }, message)
+      ])
+    ]);
+  }
+
   function DashboardView() {
     const modules = [
       { key: 'admin-shell', label: 'Admin shell', status: 'Planned' },
@@ -72,15 +182,6 @@
       { key: 'acss', label: 'Automatic CSS', detected: !!frameworksFlags.acss },
       { key: 'core', label: 'Core Framework', detected: !!frameworksFlags.core },
       { key: 'bricks', label: 'Bricks', detected: !!frameworksFlags.bricks }
-    ];
-
-    const [primaryColor, setPrimaryColor] = useState('#111827');
-    const palette = [
-      primaryColor,
-      shadeColor(primaryColor, 20),
-      shadeColor(primaryColor, -20),
-      shadeColor(primaryColor, 40),
-      shadeColor(primaryColor, -40)
     ];
 
     return h('main', { className: 'wk2-main' }, [
@@ -116,42 +217,7 @@
           ]),
           h('div', { className: 'wk2-card-footer' })
         ]),
-        h('div', { className: 'wk2-card' }, [
-          h('div', { className: 'wk2-card-section' }, [
-            h('div', { className: 'wk2-card-label' }, 'Design (color & typography)'),
-            h('div', { className: 'wk2-card-body' }, [
-              h('div', { className: 'wk2-design-row' }, [
-                h('div', { className: 'wk2-design-group' }, [
-                  h('label', null, 'Primary color'),
-                  h('input', {
-                    type: 'color',
-                    value: primaryColor,
-                    onChange: function (e) { setPrimaryColor(e.target.value); }
-                  })
-                ]),
-                h('div', { className: 'wk2-design-group' }, [
-                  h('label', null, 'Typography'),
-                  h('div', { className: 'wk2-typo-preview' }, [
-                    h('div', { className: 'wk2-typo-heading' }, 'Heading preview'),
-                    h('div', { className: 'wk2-typo-body' }, 'Body text preview')
-                  ])
-                ])
-              ]),
-              h('div', { className: 'wk2-palette' },
-                palette.map(function (c, idx) {
-                  return h('div', {
-                    key: idx,
-                    className: 'wk2-swatch',
-                    style: { backgroundColor: c }
-                  });
-                })
-              )
-            ])
-          ]),
-          h('div', { className: 'wk2-card-footer' },
-            h('div', { className: 'wk2-meta' }, 'This section will later sync with framework imports and saved settings.')
-          )
-        ])
+        h(DesignCard)
       ])
     ]);
   }

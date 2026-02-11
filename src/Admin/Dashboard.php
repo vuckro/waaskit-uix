@@ -8,6 +8,7 @@ class Dashboard
     {
         add_action('admin_menu', [$this, 'registerMenu']);
         add_action('admin_enqueue_scripts', [$this, 'enqueueAssets']);
+        add_action('wp_ajax_waaskit_uix_save_design', [$this, 'handleSaveDesign']);
     }
 
     public function registerMenu(): void
@@ -25,7 +26,7 @@ class Dashboard
 
     public function render(): void
     {
-        // On suit le pattern Fluent: un root div pour l'app JS, sans markup WP imposé.
+        // Root div for the JS app (SPA-style admin).
         echo '<div class="waaskit-uix" id="waaskit-uix-app"></div>';
     }
 
@@ -35,14 +36,21 @@ class Dashboard
             return;
         }
 
-        // Détection des frameworks (ACSS/Core/Bricks) côté PHP pour exposer à JS.
         require_once ABSPATH . 'wp-admin/includes/plugin.php';
 
         $frameworks = [
             'acss'   => is_plugin_active('automaticcss-plugin/automaticcss-plugin.php'),
             'core'   => is_plugin_active('core-framework/core-framework.php'),
-            // Bricks est considéré comme présent si le plugin OU le thème est actif.
-            'bricks' => is_plugin_active('bricks/bricks.php') || wp_get_theme()->get_template() === 'bricks' || wp_get_theme()->get_stylesheet() === 'bricks',
+            'bricks' => is_plugin_active('bricks/bricks.php')
+                || wp_get_theme()->get_template() === 'bricks'
+                || wp_get_theme()->get_stylesheet() === 'bricks',
+        ];
+
+        $settings = get_option('waaskit_uix_settings', []);
+        $design   = $settings['design'] ?? [
+            'primary'       => '#111827',
+            'font_body'     => '',
+            'font_heading'  => '',
         ];
 
         $css_path = WKUIX_DIR . 'assets/css/dashboard.css';
@@ -58,7 +66,7 @@ class Dashboard
         wp_enqueue_script(
             'waaskit-uix-dashboard',
             WKUIX_URL . 'assets/js/dashboard.js',
-            ['wp-element'],
+            ['wp-element', 'jquery'],
             file_exists($js_path) ? filemtime($js_path) : WKUIX_VERSION,
             true
         );
@@ -69,7 +77,38 @@ class Dashboard
             [
                 'version'    => WKUIX_VERSION,
                 'frameworks' => $frameworks,
+                'design'     => $design,
+                'ajaxUrl'    => admin_url('admin-ajax.php'),
+                'nonce'      => wp_create_nonce('waaskit_uix_design'),
             ]
         );
+    }
+
+    public function handleSaveDesign(): void
+    {
+        if (! current_user_can('manage_options')) {
+            wp_send_json_error(['message' => 'Unauthorized'], 403);
+        }
+
+        check_ajax_referer('waaskit_uix_design', 'nonce');
+
+        $primary      = isset($_POST['primary']) ? sanitize_text_field(wp_unslash($_POST['primary'])) : '';
+        $font_body    = isset($_POST['font_body']) ? sanitize_text_field(wp_unslash($_POST['font_body'])) : '';
+        $font_heading = isset($_POST['font_heading']) ? sanitize_text_field(wp_unslash($_POST['font_heading'])) : '';
+
+        if (! preg_match('/^#[0-9a-fA-F]{6}$/', $primary)) {
+            wp_send_json_error(['message' => 'Invalid primary color'], 400);
+        }
+
+        $settings          = get_option('waaskit_uix_settings', []);
+        $settings['design'] = [
+            'primary'       => $primary,
+            'font_body'     => $font_body,
+            'font_heading'  => $font_heading,
+        ];
+
+        update_option('waaskit_uix_settings', $settings);
+
+        wp_send_json_success(['message' => 'Design saved']);
     }
 }
