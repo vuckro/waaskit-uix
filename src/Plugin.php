@@ -2,13 +2,12 @@
 
 namespace Waaskit\UIX;
 
-use Waaskit\UIX\Admin\AdminStyles;
+use Waaskit\UIX\Admin\Dashboard;
 
 class Plugin
 {
     public function boot(): void
     {
-        // Admin only for now.
         if (is_admin()) {
             $this->bootAdmin();
         }
@@ -16,7 +15,7 @@ class Plugin
 
     protected function bootAdmin(): void
     {
-        $admin = new AdminStyles();
-        $admin->register();
+        $dashboard = new Dashboard();
+        $dashboard->register();
     }
 }

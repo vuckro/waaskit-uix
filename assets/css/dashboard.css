@@ -1,0 +1,75 @@
+/*
+ * Waaskit UIX - Dashboard shell
+ *
+ * But : fournir un cadre unifié pour les prochains modules Waaskit,
+ * sans toucher au reste de l'admin WordPress.
+ */
+
+:root {
+  --wk-surface: #ffffff;
+  --wk-surface-alt: #f3f4f6;
+  --wk-border-subtle: #e5e7eb;
+  --wk-text: #111827;
+  --wk-text-muted: #6b7280;
+  --wk-radius-s: 0.375rem;
+  --wk-radius-m: 0.5rem;
+  --wk-space-xs: 0.25rem;
+  --wk-space-s: 0.5rem;
+  --wk-space-m: 1rem;
+  --wk-accent: #111827;
+  --wk-accent-soft: #e5e7eb;
+}
+
+.wk-uix-wrap {
+  max-width: 1100px;
+}
+
+.wk-uix-title {
+  margin: 0 0 var(--wk-space-m);
+}
+
+.wk-uix-dashboard {
+  background: var(--wk-surface);
+  border-radius: var(--wk-radius-m);
+  padding: var(--wk-space-m);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+}
+
+.wk-uix-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1.2fr);
+  gap: var(--wk-space-m);
+}
+
+.wk-uix-card {
+  background: var(--wk-surface-alt);
+  border-radius: var(--wk-radius-m);
+  padding: var(--wk-space-m);
+}
+
+.wk-uix-card h2 {
+  margin-top: 0;
+  margin-bottom: var(--wk-space-s);
+}
+
+.wk-uix-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--wk-space-xs);
+}
+
+.wk-uix-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  background: var(--wk-accent-soft);
+  color: var(--wk-accent);
+}
+
+.wk-uix-meta {
+  font-size: 11px;
+  color: var(--wk-text-muted);
+  margin-top: var(--wk-space-s);
+}
