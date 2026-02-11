@@ -9,7 +9,6 @@
         h('div', { className: 'wk-uix-logo' },
           h('img', { src: LOGO_URL, alt: 'Waaskit' })
         ),
-        h('div', { className: 'wk-uix-brand-text' }, 'Waaskit UIX'),
         h('nav', { className: 'wk-uix-nav' }, [
           h('span', {
             className: 'wk-uix-nav-item ' + (active === 'dashboard' ? 'wk-uix-nav-item--active' : ''),
@@ -48,7 +47,7 @@
         ),
         h('div', { className: 'wk-uix-meta' }, 'Version: ' + (window.WKUIX && WKUIX.version ? WKUIX.version : '0.1.1'))
       ]),
-      h('aside', { className: 'wk-uix-card' }, [
+      h('aside', { className: 'wk-uix-card wk-uix-card--secondary' }, [
         h('h2', null, 'Frameworks'),
         h('p', null, 'Detected UI frameworks (read-only for now):'),
         h('ul', null,

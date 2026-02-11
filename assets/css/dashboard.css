@@ -41,14 +41,8 @@
 }
 
 .wk-uix-logo img {
-  height: 24px;
+  height: 28px;
   display: block;
-}
-
-.wk-uix-brand-text {
-  font-weight: 600;
-  color: var(--wk-text);
-  font-size: 14px;
 }
 
 .wk-uix-nav {
@@ -68,7 +62,7 @@
   color: var(--wk-text);
 }
 
-/* Corps: fond blanc en pleine largeur, plus de carte dans carte */
+/* Corps: fond blanc en pleine largeur */
 .wk-uix-main {
   background: var(--wk-surface);
   border-radius: 0 0 var(--wk-radius-m) var(--wk-radius-m);
@@ -83,11 +77,16 @@
   gap: var(--wk-space-m);
 }
 
+/* Cards plus légères, pour éviter l'effet "carte dans carte" */
 .wk-uix-card {
   background: var(--wk-surface);
   border-radius: var(--wk-radius-m);
   padding: var(--wk-space-m);
-  border: 1px solid var(--wk-border-subtle);
+  border: 1px solid rgba(229, 231, 235, 0.7);
+}
+
+.wk-uix-card--secondary {
+  border-style: dashed;
 }
 
 .wk-uix-card h2 {
@@ -115,4 +114,15 @@
   font-size: 11px;
   color: var(--wk-text-muted);
   margin-top: var(--wk-space-s);
+}
+
+/* Responsive: pile les colonnes sur petits écrans */
+@media (max-width: 960px) {
+  .wk-uix-main {
+    padding: var(--wk-space-s);
+  }
+
+  .wk-uix-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
