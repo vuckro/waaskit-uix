@@ -1,0 +1,60 @@
+/*
+ * Waaskit UIX - base admin styling
+ *
+ * Philosophy:
+ * - Use a minimal set of Waaskit tokens (--wk-*)
+ * - Fallback to common framework variables (ACSS/Core/Bricks) when present
+ * - Work even with no CSS framework installed
+ */
+
+:root {
+  /* Neutral base (works without any framework) */
+  --wk-surface: #ffffff;
+  --wk-surface-alt: #f3f4f6;
+  --wk-border-subtle: #e5e7eb;
+  --wk-text: #111827;
+  --wk-text-muted: #6b7280;
+
+  --wk-radius-s: 0.375rem;
+  --wk-radius-m: 0.5rem;
+  --wk-space-xs: 0.25rem;
+  --wk-space-s: 0.5rem;
+  --wk-space-m: 1rem;
+
+  /* Accent: noir/gris par défaut (Waaskit) */
+  --wk-accent: #111827;
+  --wk-accent-soft: #e5e7eb;
+}
+
+/* If ACSS is present, these variables will already point to a design system.
+   In future versions we can override --wk-* from PHP when we detect ACSS/Core/Bricks. */
+
+/* Light global polish: background + cards */
+body.wp-admin {
+  background-color: var(--wk-surface-alt);
+  color: var(--wk-text);
+}
+
+.wrap .notice, .wrap .update-nag {
+  border-radius: var(--wk-radius-s);
+}
+
+.wrap h1, .wrap h2, .wrap h3 {
+  color: var(--wk-text);
+}
+
+/* Admin menu tweaks (very minimal V1) */
+#adminmenu, #adminmenu .wp-submenu, #adminmenuback, #adminmenuwrap {
+  background-color: var(--wk-surface);
+}
+
+#adminmenu a {
+  color: var(--wk-text-muted);
+}
+
+#adminmenu .wp-has-current-submenu > a.menu-top, 
+#adminmenu .wp-menu-open > a.menu-top, 
+#adminmenu a:hover {
+  background-color: var(--wk-accent-soft);
+  color: var(--wk-accent);
+}
