@@ -25,9 +25,8 @@ class Dashboard
 
     public function render(): void
     {
-        echo '<div class="wrap wk-uix-wrap">';
-        echo '<div id="wk-uix-dashboard-root" class="wk-uix-dashboard"></div>'; // header + contenu gérés en JS
-        echo '</div>';
+        // On suit le pattern Fluent: un root div pour l'app JS, sans markup WP imposé.
+        echo '<div class="waaskit-uix" id="waaskit-uix-app"></div>';
     }
 
     public function enqueueAssets(string $hook): void

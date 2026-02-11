@@ -37,7 +37,6 @@
     ];
 
     return h('div', { className: 'wk-uix-grid' }, [
-      // Colonne principale : overview + modules.
       h('section', { className: 'wk-uix-card' }, [
         h('h2', null, 'Overview'),
         h('p', null, 'High-level view of Waaskit UIX modules on this site.'),
@@ -46,10 +45,8 @@
             return h('span', { key: m.key, className: 'wk-uix-pill' }, m.label + ' · ' + m.status);
           })
         ),
-        h('div', { className: 'wk-uix-meta' }, 'Version: ' + (window.WKUIX && WKUIX.version ? WKUIX.version : '0.1.0'))
+        h('div', { className: 'wk-uix-meta' }, 'Version: ' + (window.WKUIX && WKUIX.version ? WKUIX.version : '0.1.1'))
       ]),
-
-      // Colonne latérale : frameworks + design system.
       h('aside', { className: 'wk-uix-card' }, [
         h('h2', null, 'Frameworks'),
         h('p', null, 'Detected UI frameworks (read-only for now):'),
@@ -58,7 +55,7 @@
             return h('li', { key: f.key }, f.label + ' · ' + (f.detected ? 'Detected' : 'Not detected'));
           })
         ),
-        h('div', { className: 'wk-uix-meta' }, 'Later: choose which framework to use as design source.'),
+        h('div', { className: 'wk-uix-meta' }, 'Later: choose which framework to use as design source.')
       ])
     ]);
   }
@@ -82,7 +79,7 @@
   }
 
   document.addEventListener('DOMContentLoaded', function () {
-    var root = document.getElementById('wk-uix-dashboard-root');
+    var root = document.getElementById('waaskit-uix-app');
     if (!root) return;
 
     if (!window.WKUIX) {

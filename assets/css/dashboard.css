@@ -1,8 +1,6 @@
 /*
  * Waaskit UIX - Dashboard shell
- *
- * But : fournir un cadre unifié pour les prochains modules Waaskit,
- * sans toucher au reste de l'admin WordPress.
+ * Structure inspirée de Fluent (root app + header + contenu).
  */
 
 :root {
@@ -21,8 +19,10 @@
   --wk-accent-soft: #e5e7eb;
 }
 
-.wk-uix-wrap {
+/* Root app container, comme .fluent-forms */
+.waaskit-uix {
   max-width: 1100px;
+  margin: 20px auto;
 }
 
 /* Header d'application */
@@ -85,7 +85,7 @@
   cursor: pointer;
 }
 
-/* Contenu */
+/* Carte principale */
 .wk-uix-dashboard {
   background: var(--wk-surface);
   border-radius: var(--wk-radius-m);
