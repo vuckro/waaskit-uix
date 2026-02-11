@@ -49,6 +49,16 @@
     ]);
   }
 
+  function shadeColor(hex, percent) {
+    if (!hex || hex[0] !== '#') return hex;
+    const num = parseInt(hex.slice(1), 16);
+    const r = (num >> 16) + percent;
+    const g = ((num >> 8) & 0x00ff) + percent;
+    const b = (num & 0x0000ff) + percent;
+    const clamp = v => Math.max(0, Math.min(255, v));
+    return '#' + ((1 << 24) + (clamp(r) << 16) + (clamp(g) << 8) + clamp(b)).toString(16).slice(1);
+  }
+
   function DashboardView() {
     const modules = [
       { key: 'admin-shell', label: 'Admin shell', status: 'Planned' },
@@ -62,6 +72,15 @@
       { key: 'acss', label: 'Automatic CSS', detected: !!frameworksFlags.acss },
       { key: 'core', label: 'Core Framework', detected: !!frameworksFlags.core },
       { key: 'bricks', label: 'Bricks', detected: !!frameworksFlags.bricks }
+    ];
+
+    const [primaryColor, setPrimaryColor] = useState('#111827');
+    const palette = [
+      primaryColor,
+      shadeColor(primaryColor, 20),
+      shadeColor(primaryColor, -20),
+      shadeColor(primaryColor, 40),
+      shadeColor(primaryColor, -40)
     ];
 
     return h('main', { className: 'wk2-main' }, [
@@ -99,13 +118,38 @@
         ]),
         h('div', { className: 'wk2-card' }, [
           h('div', { className: 'wk2-card-section' }, [
-            h('div', { className: 'wk2-card-label' }, 'Next steps'),
+            h('div', { className: 'wk2-card-label' }, 'Design (color & typography)'),
             h('div', { className: 'wk2-card-body' }, [
-              h('p', null, 'Define design tokens, then connect ACSS/Core/Bricks as design sources.')
+              h('div', { className: 'wk2-design-row' }, [
+                h('div', { className: 'wk2-design-group' }, [
+                  h('label', null, 'Primary color'),
+                  h('input', {
+                    type: 'color',
+                    value: primaryColor,
+                    onChange: function (e) { setPrimaryColor(e.target.value); }
+                  })
+                ]),
+                h('div', { className: 'wk2-design-group' }, [
+                  h('label', null, 'Typography'),
+                  h('div', { className: 'wk2-typo-preview' }, [
+                    h('div', { className: 'wk2-typo-heading' }, 'Heading preview'),
+                    h('div', { className: 'wk2-typo-body' }, 'Body text preview')
+                  ])
+                ])
+              ]),
+              h('div', { className: 'wk2-palette' },
+                palette.map(function (c, idx) {
+                  return h('div', {
+                    key: idx,
+                    className: 'wk2-swatch',
+                    style: { backgroundColor: c }
+                  });
+                })
+              )
             ])
           ]),
           h('div', { className: 'wk2-card-footer' },
-            h('p', { className: 'wk2-meta' }, 'This block can later show recent activity or tips.')
+            h('div', { className: 'wk2-meta' }, 'This section will later sync with framework imports and saved settings.')
           )
         ])
       ])
