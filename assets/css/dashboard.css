@@ -16,6 +16,7 @@
   --wk-space-xs: 0.25rem;
   --wk-space-s: 0.5rem;
   --wk-space-m: 1rem;
+  --wk-space-l: 1.5rem;
   --wk-accent: #111827;
   --wk-accent-soft: #e5e7eb;
 }
@@ -24,10 +25,67 @@
   max-width: 1100px;
 }
 
-.wk-uix-title {
-  margin: 0 0 var(--wk-space-m);
+/* Header d'application */
+.wk-uix-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--wk-space-m);
 }
 
+.wk-uix-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--wk-space-s);
+}
+
+.wk-uix-logo {
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background: var(--wk-accent);
+}
+
+.wk-uix-brand-text {
+  font-weight: 600;
+  color: var(--wk-text);
+}
+
+.wk-uix-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--wk-space-s);
+}
+
+.wk-uix-nav-item {
+  font-size: 13px;
+  color: var(--wk-text-muted);
+  cursor: pointer;
+}
+
+.wk-uix-nav-item--active {
+  color: var(--wk-text);
+}
+
+.wk-uix-header-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--wk-space-s);
+}
+
+.wk-uix-icon-button {
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  border: 1px solid var(--wk-border-subtle);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--wk-surface);
+  cursor: pointer;
+}
+
+/* Contenu */
 .wk-uix-dashboard {
   background: var(--wk-surface);
   border-radius: var(--wk-radius-m);
