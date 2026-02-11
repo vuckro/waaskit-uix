@@ -52,6 +52,30 @@ class Dashboard
             file_exists($css_path) ? filemtime($css_path) : WKUIX_VERSION
         );
 
+        // Apply design system tokens (accent color + fonts) to CSS variables.
+        $customCss = '';
+        if (!empty($design['primary'])) {
+            $primary = $design['primary'];
+            if (preg_match('/^#[0-9a-fA-F]{6}$/', $primary)) {
+                $customCss .= sprintf(':root{--wk-accent:%s;}\n', $primary);
+            }
+        }
+        $fontBody    = $design['font_body'] ?? '';
+        $fontHeading = $design['font_heading'] ?? '';
+        if ($fontBody || $fontHeading) {
+            $customCss .= ':root{';
+            if ($fontBody) {
+                $customCss .= sprintf('--wk-font-body:%s;', $fontBody);
+            }
+            if ($fontHeading) {
+                $customCss .= sprintf('--wk-font-heading:%s;', $fontHeading);
+            }
+            $customCss .= "}\n";
+        }
+        if ($customCss) {
+            wp_add_inline_style('waaskit-uix-dashboard', $customCss);
+        }
+
         wp_enqueue_script(
             'waaskit-uix-dashboard',
             WKUIX_URL . 'assets/js/dashboard.js',
@@ -88,8 +112,8 @@ class Dashboard
             wp_send_json_error(['message' => 'Invalid primary color'], 400);
         }
 
-        $settings            = get_option('waaskit_uix_settings', []);
-        $settings['design']  = [
+        $settings           = get_option('waaskit_uix_settings', []);
+        $settings['design'] = [
             'primary'      => $primary,
             'font_body'    => $font_body,
             'font_heading' => $font_heading,
