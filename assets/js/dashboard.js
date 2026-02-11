@@ -56,10 +56,12 @@
       { key: 'plugin-theming', label: 'Plugin theming', status: 'Planned' }
     ];
 
+    const frameworksFlags = (window.WKUIX && window.WKUIX.frameworks) || {};
+
     const frameworks = [
-      { key: 'acss', label: 'Automatic CSS', detected: false },
-      { key: 'core', label: 'Core Framework', detected: false },
-      { key: 'bricks', label: 'Bricks', detected: true }
+      { key: 'acss', label: 'Automatic CSS', detected: !!frameworksFlags.acss },
+      { key: 'core', label: 'Core Framework', detected: !!frameworksFlags.core },
+      { key: 'bricks', label: 'Bricks', detected: !!frameworksFlags.bricks }
     ];
 
     return h('main', { className: 'wk2-main' }, [
@@ -76,7 +78,7 @@
             ])
           ]),
           h('div', { className: 'wk2-card-footer' },
-            h('div', { className: 'wk2-meta' }, 'Version ' + (window.WKUIX && WKUIX.version ? WKUIX.version : '0.1.1'))
+            h('div', { className: 'wk2-meta' }, 'Version ' + (window.WKUIX && window.WKUIX.version ? window.WKUIX.version : '0.1.1'))
           )
         ]),
         h('div', { className: 'wk2-card' }, [
@@ -140,7 +142,7 @@
     if (!root) return;
 
     if (!window.WKUIX) {
-      window.WKUIX = {};
+      window.WKUIX = window.WKUIX || {};
     }
 
     render(h(App), root);

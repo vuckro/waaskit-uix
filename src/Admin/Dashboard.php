@@ -35,6 +35,16 @@ class Dashboard
             return;
         }
 
+        // Détection des frameworks (ACSS/Core/Bricks) côté PHP pour exposer à JS.
+        require_once ABSPATH . 'wp-admin/includes/plugin.php';
+
+        $frameworks = [
+            'acss'   => is_plugin_active('automaticcss-plugin/automaticcss-plugin.php'),
+            'core'   => is_plugin_active('core-framework/core-framework.php'),
+            // Bricks est considéré comme présent si le plugin OU le thème est actif.
+            'bricks' => is_plugin_active('bricks/bricks.php') || wp_get_theme()->get_template() === 'bricks' || wp_get_theme()->get_stylesheet() === 'bricks',
+        ];
+
         $css_path = WKUIX_DIR . 'assets/css/dashboard.css';
         $js_path  = WKUIX_DIR . 'assets/js/dashboard.js';
 
@@ -51,6 +61,15 @@ class Dashboard
             ['wp-element'],
             file_exists($js_path) ? filemtime($js_path) : WKUIX_VERSION,
             true
+        );
+
+        wp_localize_script(
+            'waaskit-uix-dashboard',
+            'WKUIX',
+            [
+                'version'    => WKUIX_VERSION,
+                'frameworks' => $frameworks,
+            ]
         );
     }
 }
